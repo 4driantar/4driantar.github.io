@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoreo de Servicios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            background-image: url('ruta/a/tu/imagen.jpg'); /* Ruta a tu imagen */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff; /* Texto blanco para contraste */
+            text-shadow: 2px 2px 4px #000; /* Sombra para mejor legibilidad */
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            border: 2px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #cacbcc;
+            border-bottom: 2px solid #474646;
+        }
+        .urgente {
+            background-color: #f75a67; /* Rojo claro */
+        }
+        .esperando-pago {
+            background-color:  #fadc79; /* Amarillo claro */
+        }
+        .preparando {
+            background-color: #6350cebe; /* Celeste claro */
+        }
+        .cotizando {
+            background-color: #00d9ff;
+        }
+        .leyenda {
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            width: 20%; /* Ajustar el ancho de la leyenda */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
+        }
+        .leyenda div {
+            margin-bottom: 5px;
+        }
+        .color-box {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .leyenda h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        footer {
+            color: #fff; /* Color blanco para el texto del footer */
+            text-shadow: 2px 2px 4px #000; /* Sombra para mejor legibilidad */
+            margin-top: 40px; /* Espacio adicional arriba del footer */
+        }
+        .reloj {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Servicio Post-Venta American Vial 👨🏻‍🔧</h1>
+    <div class="reloj" id="reloj"></div>
+    <table id="serviceTable">
+        <thead>
+            <tr>
+                <th>Servicio ID</th>
+                <th>Mecánico</th>
+                <th>Cliente</th>
+                <th>Máquina</th>
+                <th>Ubicación</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Datos dinámicos irán aquí -->
+        </tbody>
+    </table>
+    
+    <div class="leyenda">
+        <h2>Leyenda</h2>
+        <div><span class="color-box" style="background-color: #f75a67;"></span> Urgente</div>
+        <div><span class="color-box" style="background-color: #fadc79;"></span> Esperando Pago</div>
+        <div><span class="color-box" style="background-color: #6350cebe;"></span> Preparando</div>
+        <div><span class="color-box" style="background-color: #00d9ff;"></span> Cotizando</div>
+    </div>
+
+    <script>
+        // Datos de ejemplo
+        const servicios = [
+            { id: 1, mecanico: "Juan Manuel", cliente: "Vialidad Misiones", maquina: "Grua XCMG", ubicacion: "Misiones", estado: "Urgente" },
+            { id: 2, mecanico: "Marcelo Comito", cliente: "Mina", maquina: "Motoniveladora Sinomach", ubicacion: "Catamarca", estado: "Esperando Pago" },
+            { id: 3, mecanico: "Sergio/Casasa", cliente: "Cliente C", maquina: "Topador", ubicacion: "Rosario", estado: "Preparando" },
+            { id: 1, mecanico: "Omar", cliente: "Cliente A", maquina: "Excavadora XCMG", ubicacion: "Buenos Aires", estado: "Urgente" },
+            { id: 2, mecanico: "Brian Fernandez", cliente: "Cliente B", maquina: "Retroexcavadora Case", ubicacion: "Córdoba", estado: "Esperando Pago" },
+            { id: 3, mecanico: "Carlos Gómez", cliente: "Ilva", maquina: "Autoelevador Bylion", ubicacion: "Buenos Aires", estado: "Cotizando" },
+        
+        ];
+
+        function actualizarTabla(servicios) {
+            const tableBody = document.getElementById('serviceTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = ""; // Limpiar tabla antes de actualizar
+
+            servicios.forEach(servicio => {
+                const row = tableBody.insertRow();
+                row.className = getClassByEstado(servicio.estado);
+
+                const cellId = row.insertCell(0);
+                const cellMecanico = row.insertCell(1);
+                const cellCliente = row.insertCell(2);
+                const cellMaquina = row.insertCell(3);
+                const cellUbicacion = row.insertCell(4);
+                const cellEstado = row.insertCell(5);
+
+                cellId.textContent = servicio.id;
+                cellMecanico.textContent = servicio.mecanico;
+                cellCliente.textContent = servicio.cliente;
+                cellMaquina.textContent = servicio.maquina;
+                cellUbicacion.textContent = servicio.ubicacion;
+                cellEstado.textContent = servicio.estado;
+            });
+        }
+
+        function getClassByEstado(estado) {
+            switch (estado) {
+                case "Urgente":
+                    return "urgente";
+                case "Esperando Pago":
+                    return "esperando-pago";
+                case "Preparando":
+                    return "preparando";
+                case "Cotizando":
+                    return "cotizando";
+                default:
+                    return "";
+            }
+        }
+
+        // Inicializar tabla con datos
+        actualizarTabla(servicios);
+
+        // Función para actualizar el reloj
+        function actualizarReloj() {
+            const reloj = document.getElementById('reloj');
+            const ahora = new Date();
+            const horas = ahora.getHours().toString().padStart(2, '0');
+            const minutos = ahora.getMinutes().toString().padStart(2, '0');
+            const segundos = ahora.getSeconds().toString().padStart(2, '0');
+            reloj.textContent = `${horas}:${minutos}:${segundos}`;
+        }
+
+        // Actualizar el reloj cada segundo
+        setInterval(actualizarReloj, 1000);
+
+        // Inicializar el reloj al cargar la página
+        actualizarReloj();
+    </script>
+</body>
+<footer>&copy; Copyright 2024 - Adrian Romualdo </footer>
+</html>
