@@ -1,5 +1,3 @@
-# newpagtaller
-Taller American
 cd 4driantar.github.io
 
 echo "Pagina Mecanicos" > index.html
